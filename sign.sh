@@ -18,4 +18,4 @@ else
     exit
 fi
 
-step crypto jwt sign --alg=ES256 --key=$KEY --kid=$KID --iss=$ISS --subtle
+step crypto jwt sign --alg=ES256 --key=$KEY --kid=$KID --iss=$ISS --exp=$EXP --subtle
