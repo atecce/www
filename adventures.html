@@ -1,24 +1,24 @@
 <html>
-    <head>
-        <title>Simple Map</title>
-        <meta name="viewport" content="initial-scale=1.0">
-        <meta charset="utf-8">
-    </head>
-    <body>
-        <div id="map"></div>
-        <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
-        <script>
-            mapkit.init({
-                authorizationCallback: function(done) {
-                    done("eyJhbGciOiJFUzI1NiIsImtpZCI6IllLVkMyOVVHNUgiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE1NDYzMDU1NTcsImlhdCI6MTUzNjY3NzM4OCwiaXNzIjoiWTgyRTJLNzdQNSIsIm5iZiI6MTUzNjY3NzM4OH0.f4_SyiIlGQd3fV6_bTbc5aiD2at1YRJAzyH6m1i1riUsign88MLcPJT1U9WhG_q5T4GY1HsQra1eAQ3kkf-qDQ")
-                }
-            });
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
+    <script>
+      mapkit.init({
+        authorizationCallback: function(done) {
+          done("eyJhbGciOiJFUzI1NiIsImtpZCI6IllLVkMyOVVHNUgiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE1NDYzMDU1NTcsImlhdCI6MTUzNjY3NzM4OCwiaXNzIjoiWTgyRTJLNzdQNSIsIm5iZiI6MTUzNjY3NzM4OH0.f4_SyiIlGQd3fV6_bTbc5aiD2at1YRJAzyH6m1i1riUsign88MLcPJT1U9WhG_q5T4GY1HsQra1eAQ3kkf-qDQ")
+        }
+      });
 
-            var map = new mapkit.Map("map");
-            map.region = new mapkit.CoordinateRegion(
-                new mapkit.Coordinate(37.3316850890998, -122.030067374026),
-                new mapkit.CoordinateSpan(0.167647972, 0.354985255)
-            );
-        </script>
-    </body>
+      var map = new mapkit.Map("map");
+      map.region = new mapkit.CoordinateRegion(
+        new mapkit.Coordinate(37.3316850890998, -122.030067374026),
+        new mapkit.CoordinateSpan(0.167647972, 0.354985255)
+      );
+    </script>
+  </body>
 </html>
