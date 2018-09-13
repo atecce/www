@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/sideshow/apns2/token"
 )
 
@@ -17,21 +18,20 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal("reading p8 file", err)
 	}
 
-	token := &token.Token{
-		AuthKey: authKey,
-		//		"exp":   1546305557,
-		KeyID:  kid,
-		TeamID: "Y82E2K77P5",
+	jwtToken := &jwt.Token{
+		Header: map[string]interface{}{
+			"alg": "ES256",
+			"kid": kid,
+		},
+		Claims: jwt.MapClaims{
+			"iss": "Y82E2K77P5",
+			"exp": 1546305557,
+		},
+		Method: jwt.SigningMethodES256,
 	}
-
-	if ok, _ := token.Generate(); ok {
-		log.Println("Issued at", token.IssuedAt)
-		log.Println("Bearer", token.Bearer)
-		w.Write([]byte(token.Bearer))
-	} else {
-		log.Println("generating token", err)
-		w.WriteHeader(http.StatusInternalServerError)
-	}
+	bearer, _ := jwtToken.SignedString(authKey)
+	log.Println(bearer)
+	w.Write([]byte(bearer))
 }
 
 func main() {
