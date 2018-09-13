@@ -1,6 +1,6 @@
 #!/bin/bash
 
-http localhost:8080 | read $bearer
+bearer=$(http localhost:8080/music)
 
 echo $bearer
 
