@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/sideshow/apns2/token"
 )
@@ -19,14 +18,14 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	token := &token.Token{
-		AuthKey:  authKey,
-		IssuedAt: time.Now().Unix(),
+		AuthKey: authKey,
 		//		"exp":   1546305557,
 		KeyID:  kid,
 		TeamID: "Y82E2K77P5",
 	}
 
 	if ok, _ := token.Generate(); ok {
+		log.Println("Issued at", token.IssuedAt)
 		log.Println("Bearer", token.Bearer)
 		w.Write([]byte(token.Bearer))
 	} else {
