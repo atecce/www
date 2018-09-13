@@ -23,13 +23,13 @@ var kids = map[string]string{
 	"map":   "YKVC29UG5H",
 }
 
-func sign(temp string) string {
+func sign(svc string) string {
 
-	kid := kids[temp]
+	kid := kids[svc]
 	log.Println("kid", kid)
 
 	// TODO don't hit the disk on every req
-	path := etc + "/" + temp + cat + kid + ext
+	path := etc + "/" + svc + cat + kid + ext
 	log.Println("loading auth key from path", path)
 	authKey, err := token.AuthKeyFromFile(path)
 	if err != nil {
