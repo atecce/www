@@ -47,6 +47,7 @@ func sign(w http.ResponseWriter, r *http.Request) {
 
 	svc := mux.Vars(r)["svc"]
 	log.Println("svc", svc)
+
 	if svc != "music" && svc != "map" {
 		w.WriteHeader(http.StatusNotFound)
 		return
@@ -66,6 +67,7 @@ func sign(w http.ResponseWriter, r *http.Request) {
 
 	bearer, _ := jwtToken.SignedString(keys[svc])
 	log.Println(bearer)
+
 	w.Write([]byte(bearer))
 }
 
