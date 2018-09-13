@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/ecdsa"
 	"log"
 	"net/http"
 	"time"
@@ -18,23 +19,33 @@ const (
 	iss = "Y82E2K77P5"
 )
 
-var kids = map[string]string{
-	"music": "CUG44HA5T5",
-	"map":   "YKVC29UG5H",
+var (
+	kids = map[string]string{
+		"music": "CUG44HA5T5",
+		"map":   "YKVC29UG5H",
+	}
+	keys = make(map[string]*ecdsa.PrivateKey)
+)
+
+func init() {
+	for svc, kid := range kids {
+
+		path := etc + "/" + svc + cat + kid + ext
+		log.Println("loading auth key from path", path)
+
+		key, err := token.AuthKeyFromFile(path)
+		if err != nil {
+			log.Fatal("reading p8 file", err)
+		}
+
+		keys[svc] = key
+	}
 }
 
 func sign(svc string) string {
 
 	kid := kids[svc]
 	log.Println("kid", kid)
-
-	// TODO don't hit the disk on every req
-	path := etc + "/" + svc + cat + kid + ext
-	log.Println("loading auth key from path", path)
-	authKey, err := token.AuthKeyFromFile(path)
-	if err != nil {
-		log.Fatal("reading p8 file", err)
-	}
 
 	jwtToken := &jwt.Token{
 		Header: map[string]interface{}{
@@ -47,7 +58,7 @@ func sign(svc string) string {
 		},
 		Method: jwt.SigningMethodES256,
 	}
-	bearer, _ := jwtToken.SignedString(authKey)
+	bearer, _ := jwtToken.SignedString(keys[svc])
 	return bearer
 }
 
