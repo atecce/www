@@ -7,6 +7,7 @@ import (
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/gorilla/mux"
 	"github.com/sideshow/apns2/token"
 )
 
@@ -42,15 +43,18 @@ func init() {
 	}
 }
 
-func sign(svc string) string {
+func sign(w http.ResponseWriter, r *http.Request) {
 
-	kid := kids[svc]
-	log.Println("kid", kid)
+	svc := mux.Vars(r)["svc"]
+	log.Println("svc", svc)
+	if svc != "music" || svc != "map" {
+		w.WriteHeader(http.StatusNotFound)
+	}
 
 	jwtToken := &jwt.Token{
 		Header: map[string]interface{}{
 			"alg": alg,
-			"kid": kid,
+			"kid": kids[svc],
 		},
 		Claims: jwt.MapClaims{
 			"iss": iss,
@@ -58,27 +62,15 @@ func sign(svc string) string {
 		},
 		Method: jwt.SigningMethodES256,
 	}
+
 	bearer, _ := jwtToken.SignedString(keys[svc])
-	return bearer
-}
-
-func mapkit(w http.ResponseWriter, r *http.Request) {
-
-	bearer := sign("map")
-	log.Println(bearer)
-	w.Write([]byte(bearer))
-}
-
-func musickit(w http.ResponseWriter, r *http.Request) {
-
-	bearer := sign("music")
 	log.Println(bearer)
 	w.Write([]byte(bearer))
 }
 
 func main() {
-
-	http.HandleFunc("/map", mapkit)
-	http.HandleFunc("/music", musickit)
+	r := mux.NewRouter()
+	r.HandleFunc("/{svc}", sign)
+	http.Handle("/", r)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
