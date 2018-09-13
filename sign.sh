@@ -1,8 +1,5 @@
 #!/bin/sh
 
-ISS="Y82E2K77P5"
-EXP="1546305557"
-
 ETC="/keybase/private/atec/etc"
 CAT="kitjs/AuthKey_"
 EXT=".p8"
@@ -18,4 +15,4 @@ else
     exit
 fi
 
-step crypto jwt sign --alg=ES256 --key=$KEY --kid=$KID --iss=$ISS --exp=$EXP --subtle
+step crypto jwt sign --alg=ES256 --key=$KEY --kid=$KID --iss="Y82E2K77P5" --exp="1546305557" --subtle
