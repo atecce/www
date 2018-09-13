@@ -47,8 +47,9 @@ func sign(w http.ResponseWriter, r *http.Request) {
 
 	svc := mux.Vars(r)["svc"]
 	log.Println("svc", svc)
-	if svc != "music" || svc != "map" {
+	if svc != "music" && svc != "map" {
 		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	jwtToken := &jwt.Token{
