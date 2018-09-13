@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/sideshow/apns2/token"
@@ -25,7 +26,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		},
 		Claims: jwt.MapClaims{
 			"iss": "Y82E2K77P5",
-			"exp": 1546305557,
+			"exp": time.Now().Unix() + 3000,
 		},
 		Method: jwt.SigningMethodES256,
 	}
