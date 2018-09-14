@@ -45,9 +45,14 @@ func init() {
 
 func sign(w http.ResponseWriter, r *http.Request) {
 
-	svc := mux.Vars(r)["svc"]
-	log.Println("svc", svc)
+	log.Println(r.Method, r.Host, r.URL.Path)
 
+	if r.Method != "GET" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	svc := mux.Vars(r)["svc"]
 	if svc != "music" && svc != "map" {
 		w.WriteHeader(http.StatusNotFound)
 		return
