@@ -65,8 +65,12 @@ func sign(w http.ResponseWriter, r *http.Request) {
 		Method: jwt.SigningMethodES256,
 	}
 
-	bearer, _ := jwtToken.SignedString(keys[svc])
-	log.Println(bearer)
+	bearer, err := jwtToken.SignedString(keys[svc])
+	if err != nil {
+		log.Println("signing bearer", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 	w.Write([]byte(bearer))
 }
