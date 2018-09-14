@@ -4,6 +4,7 @@ import (
 	"crypto/ecdsa"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -12,7 +13,6 @@ import (
 )
 
 const (
-	etc = "/keybase/private/atec/etc"
 	cat = "kitjs/AuthKey_"
 	ext = ".p8"
 
@@ -21,6 +21,8 @@ const (
 )
 
 var (
+	etc = os.Getenv("ETC")
+
 	kids = map[string]string{
 		"music": "CUG44HA5T5",
 		"map":   "YKVC29UG5H",
