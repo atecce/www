@@ -48,7 +48,7 @@ func init() {
 
 func sign(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Println(r.Method, "from", r.RemoteAddr, "to", r.Host, r.URL.Path)
+	fmt.Println(r.Method, r.URL.Path, "from", r.RemoteAddr, "to", r.Host)
 
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusBadRequest)
