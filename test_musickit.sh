@@ -1,7 +1,9 @@
 #!/bin/bash
 
-bearer=$(http localhost:8080/music)
+ADDR=$(gcloud compute addresses describe auth --region us-east1 --format='value(address)')
+echo $ADDR
 
-echo $bearer
+BEARER=$(http $ADDR/music)
+echo $BEARER
 
-curl -v -H "Authorization: Bearer $bearer" "https://api.music.apple.com/v1/catalog/us/songs/203709340"
+curl -v -H "Authorization: Bearer $BEARER" "https://api.music.apple.com/v1/catalog/us/songs/203709340"
