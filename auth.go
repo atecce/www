@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/ecdsa"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -34,7 +35,7 @@ func init() {
 	for svc, kid := range kids {
 
 		path := etc + "/" + svc + cat + kid + ext
-		log.Println("loading auth key from path", path)
+		fmt.Println("loading auth key from path", path)
 
 		key, err := token.AuthKeyFromFile(path)
 		if err != nil {
@@ -47,7 +48,7 @@ func init() {
 
 func sign(w http.ResponseWriter, r *http.Request) {
 
-	log.Println(r.Method, r.Host, r.URL.Path)
+	fmt.Println(r.Method, "from", r.RemoteAddr, "to", r.Host, r.URL.Path)
 
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -74,7 +75,7 @@ func sign(w http.ResponseWriter, r *http.Request) {
 
 	bearer, err := jwtToken.SignedString(keys[svc])
 	if err != nil {
-		log.Println("signing bearer", err)
+		fmt.Println("signing bearer", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
