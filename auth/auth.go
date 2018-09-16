@@ -57,6 +57,19 @@ func init() {
 	}
 }
 
+func hit(w http.ResponseWriter, r *http.Request) {
+
+	logger.Info(fmt.Sprintf("%s %s from %s to %s\n", r.Method, r.URL.Path, r.RemoteAddr, r.Host))
+
+	if r.Method != "GET" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(http.StatusOK)
+}
+
 func sign(w http.ResponseWriter, r *http.Request) {
 
 	logger.Info(fmt.Sprintf("%s %s from %s to %s\n", r.Method, r.URL.Path, r.RemoteAddr, r.Host))
@@ -98,6 +111,7 @@ func sign(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	r := mux.NewRouter()
+	r.HandleFunc("/", hit)
 	r.HandleFunc("/{svc}", sign)
 	http.Handle("/", r)
 	logger.Err(fmt.Sprintf("server died: %s\n", http.ListenAndServe(":80", nil).Error()))
