@@ -57,25 +57,33 @@ func init() {
 	}
 }
 
-func hit(w http.ResponseWriter, r *http.Request) {
+// TODO bad name
+func checkReq(w http.ResponseWriter, r *http.Request) bool {
 
 	logger.Info(fmt.Sprintf("%s %s from %s to %s\n", r.Method, r.URL.Path, r.RemoteAddr, r.Host))
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusBadRequest)
+		return false
+	}
+
+	return true
+}
+
+func hit(w http.ResponseWriter, r *http.Request) {
+
+	if ok := checkReq(w, r); !ok {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)
 }
 
 func sign(w http.ResponseWriter, r *http.Request) {
 
-	logger.Info(fmt.Sprintf("%s %s from %s to %s\n", r.Method, r.URL.Path, r.RemoteAddr, r.Host))
-
-	if r.Method != "GET" {
-		w.WriteHeader(http.StatusBadRequest)
+	if ok := checkReq(w, r); !ok {
 		return
 	}
 
@@ -104,8 +112,8 @@ func sign(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusOK)
+
 	w.Write([]byte(bearer))
 }
 
