@@ -4,6 +4,7 @@ import (
 	"crypto/ecdsa"
 	"fmt"
 	"log"
+	"log/syslog"
 	"net/http"
 	"os"
 	"time"
@@ -22,6 +23,8 @@ const (
 )
 
 var (
+	logger *syslog.Writer
+
 	etc = os.Getenv("ETC")
 
 	kids = map[string]string{
@@ -32,14 +35,22 @@ var (
 )
 
 func init() {
+
+	var err error
+
+	logger, err = syslog.Dial("tcp", "35.237.191.105:514", syslog.LOG_INFO, "auth")
+	if err != nil {
+		log.Fatal("dialing syslog", err)
+	}
+
 	for svc, kid := range kids {
 
 		path := etc + "/" + svc + cat + kid + ext
-		fmt.Println("loading auth key from path", path)
+		logger.Info(fmt.Sprintf("loading auth key from path: %s\n", path))
 
 		key, err := token.AuthKeyFromFile(path)
 		if err != nil {
-			log.Fatal("reading p8 file", err)
+			logger.Err(fmt.Sprintf("reading p8 file: %s\n", err.Error()))
 		}
 
 		keys[svc] = key
@@ -48,7 +59,7 @@ func init() {
 
 func sign(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Println(r.Method, r.URL.Path, "from", r.RemoteAddr, "to", r.Host)
+	logger.Info(fmt.Sprintf("%s %s from %s to %s\n", r.Method, r.URL.Path, r.RemoteAddr, r.Host))
 
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -75,7 +86,7 @@ func sign(w http.ResponseWriter, r *http.Request) {
 
 	bearer, err := jwtToken.SignedString(keys[svc])
 	if err != nil {
-		fmt.Println("signing bearer", err)
+		logger.Err(fmt.Sprintf("signing bearer: %s\n", err.Error()))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -89,5 +100,5 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/{svc}", sign)
 	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe(":80", nil))
+	logger.Err(fmt.Sprintf("server died: %s\n", http.ListenAndServe(":80", nil).Error()))
 }
