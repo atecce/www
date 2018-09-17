@@ -38,7 +38,7 @@ func init() {
 
 	var err error
 
-	logger, err = syslog.Dial("tcp", "35.237.191.105:514", syslog.LOG_INFO, "auth")
+	logger, err = syslog.Dial("tcp", "35.231.223.50:514", syslog.LOG_INFO, "auth")
 	if err != nil {
 		log.Fatal("dialing syslog", err)
 	}
@@ -117,10 +117,20 @@ func sign(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(bearer))
 }
 
+func redirect(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "https://"+r.Host+r.URL.Path, http.StatusMovedPermanently)
+}
+
 func main() {
+
+	// TODO send error to errchan
+	go http.ListenAndServe(":80", http.HandlerFunc(redirect))
+
 	r := mux.NewRouter()
 	r.HandleFunc("/", hit)
 	r.HandleFunc("/{svc}", sign)
-	http.Handle("/", r)
-	logger.Err(fmt.Sprintf("server died: %s\n", http.ListenAndServe(":80", nil).Error()))
+
+	authEtc := etc + "auth"
+
+	logger.Err(fmt.Sprintf("server died: %s\n", http.ListenAndServeTLS(":443", authEtc+"/server.crt", authEtc+"/server.key", r).Error()))
 }
