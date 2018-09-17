@@ -34,6 +34,12 @@ var (
 	keys = make(map[string]*ecdsa.PrivateKey)
 )
 
+func checkSyslog(err error) {
+	if err != nil {
+		fmt.Println("failed to write to syslog")
+	}
+}
+
 func init() {
 
 	var err error
@@ -46,11 +52,11 @@ func init() {
 	for svc, kid := range kids {
 
 		path := etc + "/" + svc + cat + kid + ext
-		logger.Info(fmt.Sprintf("loading auth key from path: %s\n", path))
+		checkSyslog(logger.Info("loading auth key from path: " + path))
 
 		key, err := token.AuthKeyFromFile(path)
 		if err != nil {
-			logger.Err(fmt.Sprintf("reading p8 file: %s\n", err.Error()))
+			checkSyslog(logger.Err("reading p8 file: " + err.Error()))
 		}
 
 		keys[svc] = key
@@ -59,7 +65,7 @@ func init() {
 
 func middleware(w http.ResponseWriter, r *http.Request) bool {
 
-	logger.Info(fmt.Sprintf("%s %s from %s to %s\n", r.Method, r.URL.Path, r.RemoteAddr, r.Host))
+	checkSyslog(logger.Info(r.Method + " " + r.URL.Path + " " + r.RemoteAddr + " " + r.Host))
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
@@ -106,7 +112,7 @@ func sign(w http.ResponseWriter, r *http.Request) {
 
 	bearer, err := jwtToken.SignedString(keys[svc])
 	if err != nil {
-		logger.Err(fmt.Sprintf("signing bearer: %s\n", err.Error()))
+		checkSyslog(logger.Err("signing bearer: " + err.Error()))
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -123,7 +129,7 @@ func redirect(w http.ResponseWriter, r *http.Request) {
 func main() {
 
 	go func() {
-		logger.Err(http.ListenAndServe(":80", http.HandlerFunc(redirect)).Error())
+		checkSyslog(logger.Err(http.ListenAndServe(":80", http.HandlerFunc(redirect)).Error()))
 	}()
 
 	r := mux.NewRouter()
@@ -132,5 +138,5 @@ func main() {
 
 	authEtc := etc + "auth"
 
-	logger.Err(fmt.Sprintf("server died: %s\n", http.ListenAndServeTLS(":443", authEtc+"/server.crt", authEtc+"/server.key", r).Error()))
+	checkSyslog(logger.Err(http.ListenAndServeTLS(":443", authEtc+"/server.crt", authEtc+"/server.key", r).Error()))
 }
