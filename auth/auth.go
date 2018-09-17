@@ -57,8 +57,7 @@ func init() {
 	}
 }
 
-// TODO bad name
-func checkReq(w http.ResponseWriter, r *http.Request) bool {
+func middleware(w http.ResponseWriter, r *http.Request) bool {
 
 	logger.Info(fmt.Sprintf("%s %s from %s to %s\n", r.Method, r.URL.Path, r.RemoteAddr, r.Host))
 
@@ -74,7 +73,7 @@ func checkReq(w http.ResponseWriter, r *http.Request) bool {
 
 func hit(w http.ResponseWriter, r *http.Request) {
 
-	if ok := checkReq(w, r); !ok {
+	if ok := middleware(w, r); !ok {
 		return
 	}
 
@@ -83,7 +82,7 @@ func hit(w http.ResponseWriter, r *http.Request) {
 
 func sign(w http.ResponseWriter, r *http.Request) {
 
-	if ok := checkReq(w, r); !ok {
+	if ok := middleware(w, r); !ok {
 		return
 	}
 
