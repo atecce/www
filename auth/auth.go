@@ -123,8 +123,9 @@ func redirect(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	// TODO send error to errchan
-	go http.ListenAndServe(":80", http.HandlerFunc(redirect))
+	go func() {
+		logger.Err(http.ListenAndServe(":80", http.HandlerFunc(redirect)).Error())
+	}()
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", hit)
