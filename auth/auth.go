@@ -36,7 +36,7 @@ var (
 
 func checkSyslog(err error) {
 	if err != nil {
-		fmt.Println("failed to write to syslog")
+		fmt.Println("failed to write to syslog", err)
 	}
 }
 
