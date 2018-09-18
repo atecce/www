@@ -69,7 +69,7 @@ func middleware(w http.ResponseWriter, r *http.Request) bool {
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	if r.Method != "GET" {
+	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusBadRequest)
 		return false
 	}
