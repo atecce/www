@@ -122,15 +122,7 @@ func sign(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(bearer))
 }
 
-func redirect(w http.ResponseWriter, r *http.Request) {
-	http.Redirect(w, r, "https://"+r.Host+r.URL.Path, http.StatusMovedPermanently)
-}
-
 func main() {
-
-	go func() {
-		checkSyslog(logger.Err(http.ListenAndServe(":80", http.HandlerFunc(redirect)).Error()))
-	}()
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", hit)
