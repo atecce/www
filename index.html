@@ -1,15 +1,34 @@
 <head>
   <meta charset="utf-8">
 
-  <meta name="apple-music-developer-token" content="eyJhbGciOiJFUzI1NiIsImtpZCI6IkNVRzQ0SEE1VDUiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE1NDYzMDU1NTcsImlhdCI6MTUzNDY0MTc1MSwiaXNzIjoiWTgyRTJLNzdQNSIsIm5iZiI6MTUzNDY0MTc1MX0.L-GFHcgOBuU4lX9ETuDf43f48xx-axYqs49FGaQ-b8Qr3kLBEGuDmw1QbBphUniFLTyo4uvZVBIXtJvYUtBCJQ">
-  <meta name="apple-music-app-name" content="atec.pub">
-  <meta name="apple-music-app-build" content="1978.4.1">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css"></link>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" 
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
   <script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js"></script>
+  <script>
+    document.addEventListener('musickitloaded', function() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "https://35.237.184.72/music");
+      xhr.addEventListener("load", function() {
+        console.log(this.responseText);
+        MusicKit.configure({
+          developerToken: this.responseText,
+          app: {
+            name: 'atec.pub',
+            build: '1978.4.1'
+          }
+        });
+
+        let music = MusicKit.getInstance();
+
+        music.authorize().then(function() {
+          music.player.play();
+        });
+      });
+      xhr.send();
+    });
+  </script>
 </head>
 <body>
   <div class="container">
