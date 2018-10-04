@@ -48,10 +48,10 @@
     <h2 class="subtitle">Dogmatic opinions. Pragmatic decisions</h2>
     <h2 class="subtitle">Stay curious</h2>
 
-    <button class="button fas fa-backward"></button>
+    <button class="button fas fa-backward" onclick="backward()"></button>
     <button class="button fas fa-play" onclick="play()"></button>
     <button class="button fas fa-pause" onclick="pause()"></button>
-    <button class="button fas fa-forward"></button>
+    <button class="button fas fa-forward" onclick="forward()"></button>
     <button class="button" onclick="setQueue()">Set Queue</button>
 
     <script>
@@ -71,6 +71,14 @@
 
       function pause() {
         MusicKit.getInstance().pause()
+      }
+
+      function forward() {
+        MusicKit.getInstance().skipToNextItem()
+      }
+
+      function backward() {
+        MusicKit.getInstance().skipToPreviousItem()
       }
     </script>
   </div>
