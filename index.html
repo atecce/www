@@ -1,8 +1,30 @@
 <head>
   <meta charset="utf-8">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css"></link>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" 
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+  <script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js"></script>
+  <script>
+    document.addEventListener('musickitloaded', function() {
+
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "https://auth.atec.pub/music");
+      xhr.addEventListener("load", function() {
+
+        MusicKit.configure({
+          developerToken: this.responseText,
+          app: {
+            name: 'atec.pub',
+            build: '1978.4.1'
+          }
+        });
+
+      });
+      xhr.send();
+    });
+  </script>
 </head>
 <body>
   <div class="container">
@@ -22,8 +44,43 @@
         </a>
       </div>
     </nav>
+
     <h2 class="subtitle">Dogmatic opinions. Pragmatic decisions</h2>
     <h2 class="subtitle">Stay curious</h2>
+
+    <button class="button fas fa-backward" onclick="backward()"></button>
+    <button class="button fas fa-play" onclick="play()"></button>
+    <button class="button fas fa-pause" onclick="pause()"></button>
+    <button class="button fas fa-forward" onclick="forward()"></button>
+    <button class="button" onclick="setQueue()">Set Queue</button>
+
+    <script>
+      function setQueue() {
+
+        let music = MusicKit.getInstance()
+
+        let url = 'https://itunes.apple.com/us/album/the-organ-hearts/429020349'
+        music.setQueue({ url: url }).then(function(queue) {
+          music.play()
+        })
+      }
+
+      function play() {
+        MusicKit.getInstance().play()
+      }
+
+      function pause() {
+        MusicKit.getInstance().pause()
+      }
+
+      function forward() {
+        MusicKit.getInstance().skipToNextItem()
+      }
+
+      function backward() {
+        MusicKit.getInstance().skipToPreviousItem()
+      }
+    </script>
   </div>
 
   <script>
