@@ -8,10 +8,11 @@
   <script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js"></script>
   <script>
     document.addEventListener('musickitloaded', function() {
+
       var xhr = new XMLHttpRequest();
       xhr.open("GET", "https://auth.atec.pub/music");
       xhr.addEventListener("load", function() {
-        console.log(this.responseText);
+
         MusicKit.configure({
           developerToken: this.responseText,
           app: {
@@ -22,8 +23,9 @@
 
         let music = MusicKit.getInstance();
 
-        music.authorize().then(function() {
-          music.player.play();
+        let url = 'https://itunes.apple.com/us/album/the-organ-hearts/429020349'
+        music.setQueue({ url: url }).then(function(queue) {
+          music.play();
         });
       });
       xhr.send();
