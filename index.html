@@ -9,7 +9,7 @@
   <script>
     document.addEventListener('musickitloaded', function() {
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", "https://35.237.184.72/music");
+      xhr.open("GET", "https://auth.atec.pub/music");
       xhr.addEventListener("load", function() {
         console.log(this.responseText);
         MusicKit.configure({
