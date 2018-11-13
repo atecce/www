@@ -80,11 +80,6 @@ export default {
   },
 
   created: function () {
-    this.onThemeChange = () => {
-      this.theme = this.$localStorage.get('theme');
-      document.body.className = this.theme;
-    };
-    this.onThemeChange();
 
     // Events
     this.onAlert = (alert) => {
@@ -120,18 +115,6 @@ export default {
       // Create callback functions
       this.musicKit.addEventListener(window.MusicKit.Events.mediaPlaybackError, this.mediaPlaybackError);
 
-      this.mediaItemDidChange = (event) => {
-        // Show a notification
-        if (('Notification' in window) && event.item && this.$localStorage.get('showPlaybackNotifications')) {
-          window.Notification.requestPermission();
-
-          if (window.Notification.permission === 'granted') {
-            if (this.notification) {
-              this.notification.close();
-            }
-          }
-        }
-      };
       this.musicKit.addEventListener(window.MusicKit.Events.mediaItemDidChange, this.mediaItemDidChange);
     };
 
