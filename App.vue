@@ -97,10 +97,9 @@ export default {
       window.MusicKit.configure({
         developerToken: this.token,
         app: {
-          name: 'Zachary Seguin Music',
+          name: 'atec.pub',
           build: '0.1.0'
         },
-        bitrate: window.MusicKit.PlaybackBitrate[this.$localStorage.get('bitrate')]
       });
 
       initialize();
