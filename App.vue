@@ -1,45 +1,33 @@
 <template>
   <div>
-    <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css">
-      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" 
-            integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <div class="container">
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class = "navbar-item" href="https://keybase.io/atec" target="_blank">
+            <i class="fab fa-keybase"></i>
+          </a>
+          <a class = "navbar-item" href="https://github.com/atecce" target="_blank">
+            <i class="fab fa-github"></i>
+          </a>
+          <a class = "navbar-item" href="https://linkedin.com/in/atecce" target="_blank">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a class="navbar-item" target="_blank" href="/resume.html">
+            <i class="fas fa-file-alt"></i>
+          </a>
+        </div>
+      </nav>
 
-      <!-- <script src="https://js-cdn.music.apple.com/musickit/v1/musickit.js"></script> -->
+      <h2 class="subtitle">Dogmatic opinions. Pragmatic decisions</h2>
+      <h2 class="subtitle">Stay curious</h2>
 
-    </head>
-    <body>
-      <div class="container">
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-          <div class="navbar-brand">
-            <a class = "navbar-item" href="https://keybase.io/atec" target="_blank">
-              <i class="fab fa-keybase"></i>
-            </a>
-            <a class = "navbar-item" href="https://github.com/atecce" target="_blank">
-              <i class="fab fa-github"></i>
-            </a>
-            <a class = "navbar-item" href="https://linkedin.com/in/atecce" target="_blank">
-              <i class="fab fa-linkedin"></i>
-            </a>
-            <a class="navbar-item" target="_blank" href="/resume.html">
-              <i class="fas fa-file-alt"></i>
-            </a>
-          </div>
-        </nav>
-
-        <h2 class="subtitle">Dogmatic opinions. Pragmatic decisions</h2>
-        <h2 class="subtitle">Stay curious</h2>
-
-        <button class="button fas fa-backward" onclick="backward()"></button>
-        <button class="button fas fa-play" onclick="play()"></button>
-        <button class="button fas fa-pause" onclick="pause()"></button>
-        <button class="button fas fa-forward" onclick="forward()"></button>
-        <button class="button" onclick="setQueue()">Set Queue</button>
-      </div>
-      <!-- <script src="common.js"></script> -->
-    </body>
+      <button class="button fas fa-backward" v-on:click="backward()"></button>
+      <button class="button fas fa-play" v-on:click="play()"></button>
+      <button class="button fas fa-pause" v-on:click="pause()"></button>
+      <button class="button fas fa-forward" v-on:click="forward()"></button>
+      <button class="button" v-on:click="setQueue()">Set Queue</button>
+    </div>
+    <!-- <script src="common.js"></script> -->
   </div>
 </template>
 
@@ -47,90 +35,63 @@
 export default {
   data: function () {
     return {
-      music: null
+      music: null,
+      token: null
     }
   },
-  computed: {
 
-    token: function () {
-      return this.$http.get("https://auth.atec.pub/music")
-    },
+  methods: {
 
     // player
     // TODO refactor next two to toggle with backing state
-    // play: function () {
-    //   this.music.play()
-    // },
-    // pause: function () {
-    //   this.music.pause()
-    // },
-    // forward: function () {
-    //   this.music.skipToNextItem()
-    // },
-    // backward: function () {
-    //   this.music.skipToPreviousItem()
-    // },
-    // setQueue: function () {
-    //   this.music.setQueue({ 
-    //     url: 'https://itunes.apple.com/us/album/the-organ-hearts/429020349' 
-    //   }).then(function() {
-    //     this.music.play()
-    //   })
-    // },
+    play: function () {
+      window.MusicKit.getInstance().play()
+    },
+    pause: function () {
+      this.music.pause()
+    },
+    forward: function () {
+      this.music.skipToNextItem()
+    },
+    backward: function () {
+      this.music.skipToPreviousItem()
+    },
+    setQueue: function () {
+      this.music.setQueue({
+        album: '429020349'
+      })
+    },
   },
 
   created: function () {
 
-    // Events
-    this.onAlert = (alert) => {
-      this.alert.details = alert;
-      this.alert.countdown = 5;
-    };
+    document.addEventListener('musickitloaded', function () {
 
-    let initializeMusicKit = () => {
-      // Configure MusicKit
+      var xhr = new XMLHttpRequest()
+      xhr.overrideMimeType("text/plain; charset=x-user-defined")
+      xhr.open("GET", "https://auth.atec.pub/music", false)
+      xhr.send()
+      this.token = xhr.responseText
+
+      // eslint-disable-next-line
+      console.log("configuring MusicKit")
+
+      // eslint-disable-next-line
+      console.log(this.token)
+
       window.MusicKit.configure({
         developerToken: this.token,
         app: {
           name: 'atec.pub',
           build: '0.1.0'
         },
-      });
+      })
 
-      initialize();
-    };
+      this.music = window.MusicKit.getInstance()
 
-    let initialize = () => {
-      let musicKit = window.MusicKit.getInstance();
-
-      if (!musicKit.isAuthorized && this.$route.meta.isLibrary) {
-        this.$router.push({ path: '/', replace: true });
-      }
-
-      this.musicKit = musicKit;
-
-      this.isAuthorized = this.musicKit.isAuthorized;
-      this.musicKit.addEventListener(window.MusicKit.Events.authorizationStatusDidChange, this.onAuthorizationStatusDidChange);
-
-      // Create callback functions
-      this.musicKit.addEventListener(window.MusicKit.Events.mediaPlaybackError, this.mediaPlaybackError);
-
-      this.musicKit.addEventListener(window.MusicKit.Events.mediaItemDidChange, this.mediaItemDidChange);
-    };
-
-    // Check for MusicKit
-    if (window.MusicKit) {
-      try {
-        this.musicKit = window.MusicKit.getInstance();
-        initialize();
-      } catch (err) {
-        initializeMusicKit();
-      }
-    } else {
-      document.addEventListener('musickitloaded', () => {
-        initializeMusicKit();
-      });
-    }
+      // eslint-disable-next-line
+      console.log(this.music)
+    })
   }
 }
 </script>
