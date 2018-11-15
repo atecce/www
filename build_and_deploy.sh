@@ -1,6 +1,8 @@
 #!/bin/bash
 
+WWW=/keybase/private/atec,kbpbot/www
+
 vue build
-rm -rf /keybase/private/atec,kbpbot/www/*
-cp -r dist/ /keybase/private/atec,kbpbot/www/
-cp favicon.ico resume.pdf adventures.html /keybase/private/atec,kbpbot/www/
+rm -rf $WWW/*
+cp -r dist/ $WWW
+cp favicon.ico resume.pdf adventures.html $WWW
