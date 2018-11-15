@@ -10,7 +10,11 @@
     <script>
       mapkit.init({
         authorizationCallback: function(done) {
-          done("eyJhbGciOiJFUzI1NiIsImtpZCI6IllLVkMyOVVHNUgiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE1NDYzMDU1NTcsImlhdCI6MTUzNjY3NzM4OCwiaXNzIjoiWTgyRTJLNzdQNSIsIm5iZiI6MTUzNjY3NzM4OH0.f4_SyiIlGQd3fV6_bTbc5aiD2at1YRJAzyH6m1i1riUsign88MLcPJT1U9WhG_q5T4GY1HsQra1eAQ3kkf-qDQ")
+          var xhr = new XMLHttpRequest()
+          xhr.overrideMimeType("text/plain; charset=x-user-defined")
+          xhr.open("GET", "https://auth.atec.pub/map", false)
+          xhr.send()
+          done(xhr.responseText)
         }
       });
 
