@@ -48,6 +48,8 @@ export default {
       })
       xhr.send()
     })
+
+    localStorage.setItem("focus", "pl.u-XmgMhDYx4Jml")
   }
 }
 </script>
