@@ -39,7 +39,7 @@ export default {
       xhr.open("GET", "https://auth.atec.pub/music")
       xhr.addEventListener("load", function() {
 
-        MusicKit.configure({
+        window.MusicKit.configure({
           developerToken: this.responseText,
           app: {
             name: 'atec.pub',
@@ -47,7 +47,7 @@ export default {
           }
         })
 
-        let music = MusicKit.getInstance()
+        let music = window.MusicKit.getInstance()
 
         music.play()
 
