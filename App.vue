@@ -31,6 +31,30 @@ export default {
     xhr.overrideMimeType("text/plain; charset=x-user-defined")
     xhr.open("GET", "https://auth.atec.pub/", false)
     xhr.send()
+
+    document.addEventListener('musickitloaded', function() {
+
+      var xhr = new XMLHttpRequest()
+      xhr.overrideMimeType("text/plain; charset=x-user-defined")
+      xhr.open("GET", "https://auth.atec.pub/music")
+      xhr.addEventListener("load", function() {
+
+        MusicKit.configure({
+          developerToken: this.responseText,
+          app: {
+            name: 'atec.pub',
+            build: '0.1.0'
+          }
+        })
+
+        let music = MusicKit.getInstance()
+
+        music.play()
+
+      })
+      xhr.send()
+
+    })
   }
 }
 </script>
