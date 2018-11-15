@@ -27,18 +27,17 @@
 <script>
 export default {
   created: function () {
+
     var xhr = new XMLHttpRequest()
     xhr.overrideMimeType("text/plain; charset=x-user-defined")
     xhr.open("GET", "https://auth.atec.pub/")
     xhr.send()
 
     document.addEventListener('musickitloaded', function() {
-
       var xhr = new XMLHttpRequest()
       xhr.overrideMimeType("text/plain; charset=x-user-defined")
       xhr.open("GET", "https://auth.atec.pub/music")
       xhr.addEventListener("load", function() {
-
         window.MusicKit.configure({
           developerToken: this.responseText,
           app: {
@@ -46,14 +45,8 @@ export default {
             build: '0.1.0'
           }
         })
-
-        let music = window.MusicKit.getInstance()
-
-        music.play()
-
       })
       xhr.send()
-
     })
   }
 }
