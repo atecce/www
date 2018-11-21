@@ -6,6 +6,9 @@
           <a class="navbar-item" href="https://keybase.io/atec" target="_blank">
             <i class="fab fa-keybase"></i>
           </a>
+          <a class="navbar-item" href="https://itunes.apple.com/profile/atec" target="_blank">
+            <i class="fab fa-apple"></i>
+          </a>
           <a class = "navbar-item" href="https://stackoverflow.com/story/atec" target="_blank">
             <i class="fab fa-stack-overflow"></i>
           </a>
