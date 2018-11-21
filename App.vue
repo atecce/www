@@ -23,9 +23,6 @@
           </a>
         </div>
       </nav>
-
-      <h2 class="subtitle">Dogmatic opinions. Pragmatic decisions</h2>
-      <h2 class="subtitle">Stay curious</h2>
     </div>
   </div>
 </template>
