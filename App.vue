@@ -72,9 +72,24 @@ export default {
     },
 
     temp() {
-      d3.json("http://localhost:8080/Maslin,%20T.%20Paul/Occurrence%20of%20the%20Garter%20Snake,%20Thamnophis%20sirtalis,%20in%20the%20Great%20Plains%20and%20Rocky%20Mountains.json").then(function(data) {
+
+      d3.json("http://localhost:8080/Maslin,%20T.%20Paul/Occurrence%20of%20the%20Garter%20Snake,%20Thamnophis%20sirtalis,%20in%20the%20Great%20Plains%20and%20Rocky%20Mountains.json").then(function(entities) {
+
+        var x = []
+        var y = []
+
+        for (var entity in entities) {
+          if (entities.hasOwnProperty(entity)) {
+              x.push(entity)
+              y.push(entities[entity])
+          }
+        }
+
         // eslint-disable-next-line
-        console.log(data)
+        console.log(x)
+
+        // eslint-disable-next-line
+        console.log(y)
       })
     }
   },
