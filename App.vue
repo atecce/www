@@ -69,6 +69,16 @@ export default {
         .y(d => scale.y(d));
 
       this.line = path(this.data);
+    },
+
+    temp() {
+      var xhr = new XMLHttpRequest()
+      xhr.open("GET", "http://localhost:8080/Maslin,%20T.%20Paul/Occurrence%20of%20the%20Garter%20Snake,%20Thamnophis%20sirtalis,%20in%20the%20Great%20Plains%20and%20Rocky%20Mountains.json")
+      xhr.send()
+      xhr.addEventListener("load", function() {
+        // eslint-disable-next-line
+        console.log(this.responseText)
+      })
     }
   },
 
@@ -99,6 +109,8 @@ export default {
     })
 
     localStorage.setItem("focus", "pl.u-XmgMhDYx4Jml")
+
+    this.temp()
   }
 }
 </script>
