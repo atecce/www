@@ -39,23 +39,26 @@ export default {
 
       d3.json("http://localhost:8080/Maslin,%20T.%20Paul/Occurrence%20of%20the%20Garter%20Snake,%20Thamnophis%20sirtalis,%20in%20the%20Great%20Plains%20and%20Rocky%20Mountains.json").then(function(entities) {
 
-        var x = []
-        var y = []
+        var namedEntities = []
+        var counts = []
 
         for (var entity in entities) {
           if (entities.hasOwnProperty(entity)) {
-              x.push(entity)
-              y.push(entities[entity])
+              namedEntities.push(entity)
+              counts.push(entities[entity])
           }
         }
 
+        var x = d3.scaleLinear()
+          .domain([0, d3.max(counts)])
+          .range([0, 420])
+
         d3.select(".chart")
           .selectAll("div")
-            .data(y)
+            .data(counts)
           .enter().append("div")
-            .style("width", function(d) { return d * 10 + "px" })
+            .style("width", function(d) { return x(d) + "px" })
             .text(function(d) { return d })
-
 
         // eslint-disable-next-line
         console.log(x)
