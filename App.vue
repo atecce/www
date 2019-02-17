@@ -24,11 +24,7 @@
         </div>
       </nav>
     </div>
-    <svg width="500" height="270">
-      <g style="transform: translate(0, 10px)">
-        <path :d="line" />
-      </g>
-    </svg>
+    <div class="chart"></div>
   </div>
 </template>
 
@@ -36,42 +32,10 @@
 import * as d3 from 'd3';
 
 export default {
-  data: function () {
-    return {
-      data: [99, 71, 78, 25, 36, 92],
-      line: '',
-    }
-  },
   methods: {
-    getScales() {
-
-      // set ranges of x and y axis
-      const x = d3.scaleLinear().range([0, 430]);
-      const y = d3.scaleLinear().range([210, 0]);
-
-      // scale left and top axis
-      d3.axisLeft().scale(x);
-      d3.axisTop().scale(y);
-
-      // ???
-      x.domain(d3.extent(this.data, (d, i) => i));
-      y.domain([0, d3.max(this.data, d => d)]);
-
-      return { x, y };
-    },
-
-    calculatePath() {
-      const scale = this.getScales();
-
-      // ???
-      const path = d3.line()
-        .x((d, i) => scale.x(i))
-        .y(d => scale.y(d));
-
-      this.line = path(this.data);
-    },
 
     temp() {
+
 
       d3.json("http://localhost:8080/Maslin,%20T.%20Paul/Occurrence%20of%20the%20Garter%20Snake,%20Thamnophis%20sirtalis,%20in%20the%20Great%20Plains%20and%20Rocky%20Mountains.json").then(function(entities) {
 
@@ -85,6 +49,14 @@ export default {
           }
         }
 
+        d3.select(".chart")
+          .selectAll("div")
+            .data(y)
+          .enter().append("div")
+            .style("width", function(d) { return d * 10 + "px" })
+            .text(function(d) { return d })
+
+
         // eslint-disable-next-line
         console.log(x)
 
@@ -95,7 +67,8 @@ export default {
   },
 
   mounted: function () {
-    this.calculatePath();
+
+    this.temp()
   },
   created: function () {
 
@@ -121,13 +94,20 @@ export default {
     })
 
     localStorage.setItem("focus", "pl.u-XmgMhDYx4Jml")
-
-    this.temp()
   }
 }
 </script>
 
 <style>
+.chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+
 svg {
   margin: 25px;
   fill: none;
