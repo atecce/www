@@ -37,53 +37,86 @@ export default {
 
     temp() {
 
-      d3.json("http://canon.atec.pub/Maslin,%20T.%20Paul/Occurrence%20of%20the%20Garter%20Snake,%20Thamnophis%20sirtalis,%20in%20the%20Great%20Plains%20and%20Rocky%20Mountains.json").then(function(entities) {
+      const width = 960, height = 500
 
-        var namedEntities = []
-        var counts = []
+      d3.select(".chart")
+        .attr("width", width)
+        .attr("height", height)
+
+      const margin = ({top: 20, right: 0, bottom: 30, left: 40})
+
+      d3.json("http://canon.atec.pub/Maslin,%20T.%20Paul/Occurrence%20of%20the%20Garter%20Snake,%20Thamnophis%20sirtalis,%20in%20the%20Great%20Plains%20and%20Rocky%20Mountains.json").then(function(entities) {
+        
+        // eslint-disable-next-line
+        console.log("in callback")
+
+        var data = []
 
         for (var entity in entities) {
           if (entities.hasOwnProperty(entity)) {
-              namedEntities.push(entity)
-              counts.push(entities[entity])
+              data.push({ "text": entity, "count": entities[entity] })
           }
         }
 
-        var width = 420, barHeight = 20
-
-        var x = d3.scaleLinear()
-          .domain([0, d3.max(counts)])
-          .range([0, width])
-
-        var chart = d3.select(".chart")
-          .attr("width", width)
-          .attr("height", barHeight * namedEntities.length)
-
-        var bar = chart.selectAll("g")
-          .data(counts)
-          .enter().append("g")
-          .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")" })
-
-        bar.append("rect")
-          .attr("width", x) 
-          .attr("height", barHeight - 1)
-
-        bar.append("text")
-          .attr("x", function(d) { return x(d) - 3 })
-          .attr("y", barHeight / 2)
-          .attr("dy", ".35em")
-          .text(function(d) { return d })
-
         // eslint-disable-next-line
-        console.log(x)
+        console.log(data)
 
+        const x = d3.scaleBand()
+          .domain(data.map(d => d.text))
+          .range([margin.left, width - margin.right])
+          .padding(0.1)
+
+        const y = d3.scaleLinear()
+          .domain([0, d3.max(data, d => d.count)]).nice()
+          .range([height - margin.bottom, margin.top])
+
+        const xAxis = g => g
+          .attr("transform", `translate(0,${height - margin.bottom})`)
+          .call(d3.axisBottom(x).tickSizeOuter(0))
+
+        const yAxis = g => g
+          .attr("transform", `translate(${margin.left},0)`)
+          .call(d3.axisLeft(y))
+          .call(g => g.select(".domain").remove())
+
+        const svg = d3.selectAll("svg")
+      
         // eslint-disable-next-line
-        console.log(y)
+        console.log(svg)
+
+        svg.append("g")
+            .attr("fill", "steelblue")
+          .selectAll("rect")
+          .data(data)
+          .enter().append("rect")
+          // .join("rect")
+            .attr("x", d => x(d.text))
+            .attr("width", x.bandwidth())
+            .attr("y", d => y(d.count))
+            .attr("height", d => y(0) - y(d.count))
+      
+        // eslint-disable-next-line
+        console.log(svg)
+        
+        svg.append("g")
+          .call(xAxis)
+      
+        // eslint-disable-next-line
+        console.log(svg)
+        
+        svg.append("g")
+          .call(yAxis)
+      
+        // eslint-disable-next-line
+        console.log(svg)
       })
     }
   },
 
   mounted: function () {
+
+    // eslint-disable-next-line
+    console.log("mounted")
 
     this.temp()
   },
