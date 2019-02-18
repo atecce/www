@@ -51,7 +51,6 @@ export default {
         console.log("in callback")
 
         var data = []
-
         for (var entity in entities) {
           if (entities.hasOwnProperty(entity)) {
               data.push({ "text": entity, "count": entities[entity] })
@@ -80,9 +79,6 @@ export default {
           .call(g => g.select(".domain").remove())
 
         const svg = d3.selectAll("svg")
-      
-        // eslint-disable-next-line
-        console.log(svg)
 
         svg.append("g")
             .attr("fill", "steelblue")
@@ -94,9 +90,6 @@ export default {
             .attr("width", x.bandwidth())
             .attr("y", d => y(d.count))
             .attr("height", d => y(0) - y(d.count))
-      
-        // eslint-disable-next-line
-        console.log(svg)
         
         svg.append("g")
           .call(xAxis)
@@ -149,21 +142,12 @@ export default {
 </script>
 
 <style>
-/* .chart div {
-  font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white;
-} */
-
 .chart rect {
   fill: steelblue;
 }
 
 .chart text {
-  fill: white;
+  fill: black;
   font: 10px sans-serif;
   text-anchor: end;
 }
