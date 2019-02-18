@@ -24,7 +24,8 @@
         </div>
       </nav>
     </div>
-    <div class="chart"></div>
+
+    <svg class="chart"></svg>
   </div>
 </template>
 
@@ -36,8 +37,7 @@ export default {
 
     temp() {
 
-
-      d3.json("http://localhost:8080/Maslin,%20T.%20Paul/Occurrence%20of%20the%20Garter%20Snake,%20Thamnophis%20sirtalis,%20in%20the%20Great%20Plains%20and%20Rocky%20Mountains.json").then(function(entities) {
+      d3.json("http://canon.atec.pub/Maslin,%20T.%20Paul/Occurrence%20of%20the%20Garter%20Snake,%20Thamnophis%20sirtalis,%20in%20the%20Great%20Plains%20and%20Rocky%20Mountains.json").then(function(entities) {
 
         var namedEntities = []
         var counts = []
@@ -49,16 +49,30 @@ export default {
           }
         }
 
+        var width = 420, barHeight = 20
+
         var x = d3.scaleLinear()
           .domain([0, d3.max(counts)])
-          .range([0, 420])
+          .range([0, width])
 
-        d3.select(".chart")
-          .selectAll("div")
-            .data(counts)
-          .enter().append("div")
-            .style("width", function(d) { return x(d) + "px" })
-            .text(function(d) { return d })
+        var chart = d3.select(".chart")
+          .attr("width", width)
+          .attr("height", barHeight * namedEntities.length)
+
+        var bar = chart.selectAll("g")
+          .data(counts)
+          .enter().append("g")
+          .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")" })
+
+        bar.append("rect")
+          .attr("width", x) 
+          .attr("height", barHeight - 1)
+
+        bar.append("text")
+          .attr("x", function(d) { return x(d) - 3 })
+          .attr("y", barHeight / 2)
+          .attr("dy", ".35em")
+          .text(function(d) { return d })
 
         // eslint-disable-next-line
         console.log(x)
@@ -102,19 +116,22 @@ export default {
 </script>
 
 <style>
-.chart div {
+/* .chart div {
   font: 10px sans-serif;
   background-color: steelblue;
   text-align: right;
   padding: 3px;
   margin: 1px;
   color: white;
+} */
+
+.chart rect {
+  fill: steelblue;
 }
 
-svg {
-  margin: 25px;
-  fill: none;
-  stroke: #76BF8A;
-  stroke-width: 3px;
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
 }
 </style>
