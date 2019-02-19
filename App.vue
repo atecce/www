@@ -25,6 +25,22 @@
       </nav>
     </div>
 
+    <select v-model="currentAuthor">
+      <option v-for="author in authors">
+        {{ author }}
+      </option>
+    </select>
+    <br>
+
+    <select v-model="currentWork">
+      <option v-for="work in works">
+        {{ work }}
+      </option>
+    </select>
+    <br>
+
+    <button @click="getEntities">Get Entities</button>
+
     <div class="scroller">
       <svg class="chart"></svg>
     </div>
@@ -35,11 +51,32 @@
 import * as d3 from 'd3';
 
 export default {
+  data () {
+    return {
+      root: "http://localhost:8081/",
+      currentAuthor:  "",
+      currentWork: ""
+    }
+  },
+  computed: {
+    authors() {
+      return this.get(this.root)
+    },
+    works() {
+      return this.get(this.root + this.currentAuthor)
+    }
+  },
   methods: {
+    get(url) {
+      console.log(url)
+      var req = new XMLHttpRequest();
+      req.open('GET', url, false);
+      req.send(null);
+      return JSON.parse(req.responseText);
+    },
+    getEntities() {
 
-    temp() {
-
-      const width = 25000, height = 500
+      const width = 45000, height = 500
 
       d3.select(".chart")
         .attr("width", width)
@@ -47,7 +84,7 @@ export default {
 
       const margin = ({top: 20, right: 0, bottom: 30, left: 40})
 
-      d3.json("http://canon.atec.pub/Maslin,%20T.%20Paul/Occurrence%20of%20the%20Garter%20Snake,%20Thamnophis%20sirtalis,%20in%20the%20Great%20Plains%20and%20Rocky%20Mountains.json").then(function(entities) {
+      d3.json(this.root+this.currentAuthor+"/"+this.currentWork).then(function(entities) {
         
         // eslint-disable-next-line
         console.log("in callback")
@@ -110,14 +147,6 @@ export default {
         console.log(svg)
       })
     }
-  },
-
-  mounted: function () {
-
-    // eslint-disable-next-line
-    console.log("mounted")
-
-    this.temp()
   },
   created: function () {
 
