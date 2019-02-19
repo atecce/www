@@ -53,15 +53,16 @@ import * as d3 from 'd3';
 export default {
   data () {
     return {
+
       root: "http://localhost:8081/",
-      currentAuthor:  "",
-      currentWork: ""
+
+      currentAuthor: "",
+      currentWork: "",
+
+      authors: [],
     }
   },
   computed: {
-    authors() {
-      return this.get(this.root)
-    },
     works() {
       return this.get(this.root + this.currentAuthor)
     }
@@ -72,8 +73,40 @@ export default {
       var req = new XMLHttpRequest();
       req.open('GET', url, false);
       req.send(null);
-      return JSON.parse(req.responseText);
+      try {
+        return JSON.parse(req.responseText);
+      } catch {
+        return
+      }
     },
+    fetchAuthors() {
+      fetch(this.root).then(res => {
+
+        const r = res.body.getReader()
+        console.log(r)
+
+        r.read().then(({ done, value }) => {
+
+          console.log(value)
+
+          console.log(new TextDecoder("utf-8").decode(value).split("\n"))
+
+          const newAuthors = new TextDecoder("utf-8").decode(value).split("\n")
+
+          console.log(done)
+
+          this.authors = this.authors.concat(newAuthors)
+
+          console.log(newAuthors)
+          console.log(this.authors)
+
+          if (done) {
+            return
+          }
+        })
+      })
+    },
+
     getEntities() {
 
       const width = 45000, height = 500
@@ -147,6 +180,9 @@ export default {
         console.log(svg)
       })
     }
+  },
+  mounted: function() {
+      this.fetchAuthors()
   },
   created: function () {
 
