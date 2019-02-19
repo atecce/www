@@ -25,7 +25,9 @@
       </nav>
     </div>
 
-    <svg class="chart"></svg>
+    <div class="scroller">
+      <svg class="chart"></svg>
+    </div>
   </div>
 </template>
 
@@ -37,7 +39,7 @@ export default {
 
     temp() {
 
-      const width = 960, height = 500
+      const width = 25000, height = 500
 
       d3.select(".chart")
         .attr("width", width)
@@ -56,6 +58,10 @@ export default {
               data.push({ "text": entity, "count": entities[entity] })
           }
         }
+
+        data.sort(function(a, b) {
+          return a.count < b.count
+        })
 
         // eslint-disable-next-line
         console.log(data)
@@ -150,5 +156,11 @@ export default {
   fill: black;
   font: 10px sans-serif;
   text-anchor: end;
+}
+
+.scroller {
+  width: 960;
+  height: 500;
+  overflow-x: scroll;
 }
 </style>
