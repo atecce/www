@@ -112,6 +112,9 @@ export default {
       const width = 45000, height = 500
 
       d3.select(".chart")
+        .selectAll("g").remove()
+
+      d3.select(".chart")
         .attr("width", width)
         .attr("height", height)
 
