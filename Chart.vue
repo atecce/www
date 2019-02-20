@@ -1,14 +1,14 @@
 <template>
   <div>
     <select v-model="currentAuthor">
-      <option v-for="author in authors">
+      <option v-for="author in authors" :key="author">
         {{ author }}
       </option>
     </select>
     <br>
 
     <select v-model="currentWork">
-      <option v-for="work in works">
+      <option v-for="work in works" :key="work">
         {{ work }}
       </option>
     </select>
@@ -45,7 +45,6 @@ export default {
   },
   methods: {
     get(url) {
-      console.log(url)
       var req = new XMLHttpRequest();
       req.open('GET', url, false);
       req.send(null);
@@ -59,22 +58,12 @@ export default {
       fetch(this.root).then(res => {
 
         const r = res.body.getReader()
-        console.log(r)
 
         r.read().then(({ done, value }) => {
 
-          console.log(value)
-
-          console.log(new TextDecoder("utf-8").decode(value).split("\n"))
-
           const newAuthors = new TextDecoder("utf-8").decode(value).split("\n")
 
-          console.log(done)
-
           this.authors = this.authors.concat(newAuthors)
-
-          console.log(newAuthors)
-          console.log(this.authors)
 
           if (done) {
             return
@@ -178,8 +167,17 @@ export default {
 }
 
 .scroller {
+  margin-left: 10px;
   width: 960;
   height: 500;
   overflow-x: scroll;
+}
+
+select {
+  margin-left: 10px;
+}
+
+button {
+  margin-left: 10px;
 }
 </style>
