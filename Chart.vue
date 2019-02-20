@@ -30,7 +30,7 @@ export default {
    data () {
     return {
 
-      root: "http://canon.atec.pub/",
+      root: "https://canon.atec.pub/",
 
       currentAuthor: "",
       currentWork: "",
