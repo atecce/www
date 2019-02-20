@@ -74,21 +74,7 @@ export default {
 
     getEntities() {
 
-      const width = 45000, height = 500
-
-      d3.select(".chart")
-        .selectAll("g").remove()
-
-      d3.select(".chart")
-        .attr("width", width)
-        .attr("height", height)
-
-      const margin = ({top: 20, right: 0, bottom: 30, left: 40})
-
       d3.json(this.root+this.currentAuthor+"/"+this.currentWork).then(function(entities) {
-        
-        // eslint-disable-next-line
-        console.log("in callback")
 
         var data = []
         for (var entity in entities) {
@@ -101,8 +87,16 @@ export default {
           return a.count < b.count
         })
 
-        // eslint-disable-next-line
-        console.log(data)
+        const width = data.length * 75, height = 500
+
+        d3.select(".chart")
+         .selectAll("g").remove()
+
+        d3.select(".chart")
+          .attr("width", width)
+          .attr("height", height)
+
+        const margin = ({top: 20, right: 0, bottom: 30, left: 40})
 
         const x = d3.scaleBand()
           .domain(data.map(d => d.text))
@@ -129,23 +123,16 @@ export default {
           .selectAll("rect")
           .data(data)
           .enter().append("rect")
-          // .join("rect")
             .attr("x", d => x(d.text))
-            .attr("width", x.bandwidth())
+            .attr("width", 50)
             .attr("y", d => y(d.count))
             .attr("height", d => y(0) - y(d.count))
         
         svg.append("g")
           .call(xAxis)
-      
-        // eslint-disable-next-line
-        console.log(svg)
         
         svg.append("g")
           .call(yAxis)
-      
-        // eslint-disable-next-line
-        console.log(svg)
       })
     }
   },
