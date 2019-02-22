@@ -1,14 +1,8 @@
 <template>
   <div>
-    <div class="select">
-      <select v-model="currentAuthor">
-        <option v-for="author in authors" :key="author">
-          {{ author }}
-        </option>
-      </select>
+    <div class="model-select">
+      <model-select :options="authors" v-model="currentAuthor" placeholder="author"></model-select>
     </div>
-    <br>
-    <br>
 
     <div class="select">
       <select v-model="currentWork">
@@ -31,11 +25,14 @@
 </template>
 
 <script>
-import * as d3 from 'd3';
+import * as d3 from 'd3'
+import { ModelSelect } from 'vue-search-select'
 
 export default {
-
-   data () {
+  components: {
+    ModelSelect
+  },
+  data () {
     return {
 
       root: "https://canon.atec.pub/",
@@ -72,7 +69,11 @@ export default {
 
           const newAuthors = new TextDecoder("utf-8").decode(value).split("\n")
 
-          this.authors = this.authors.concat(newAuthors)
+          for (var i in newAuthors) {
+            this.authors.push({ "value": newAuthors[i], "text": newAuthors[i] })
+          }
+
+          console.log(this.authors)
 
           if (done) {
             return
@@ -145,7 +146,7 @@ export default {
         svg.append("g")
           .call(yAxis)
       })
-    }
+    },
   },
   mounted: function() {
       this.fetchAuthors()
@@ -175,6 +176,12 @@ select {
   margin-left: 10px;
 }
 
+.model-select {
+  margin-left: 10px;
+  margin-right: 1000px;
+  margin-bottom: 10px;
+}
+ 
 button {
   margin-left: 10px;
 }
