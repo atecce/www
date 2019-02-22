@@ -1,20 +1,28 @@
 <template>
   <div>
-    <select v-model="currentAuthor">
-      <option v-for="author in authors" :key="author">
-        {{ author }}
-      </option>
-    </select>
+    <div class="select">
+      <select v-model="currentAuthor">
+        <option v-for="author in authors" :key="author">
+          {{ author }}
+        </option>
+      </select>
+    </div>
+    <br>
     <br>
 
-    <select v-model="currentWork">
-      <option v-for="work in works" :key="work">
-        {{ work }}
-      </option>
-    </select>
+    <div class="select">
+      <select v-model="currentWork">
+        <option v-for="work in works" :key="work">
+          {{ work }}
+        </option>
+      </select>
+    </div>
+    <br>
     <br>
 
-    <button @click="getEntities">Get Entities</button>
+    <button class="button" @click="getEntities">Get Entities</button>
+    <br>
+    <br>
 
     <div class="scroller">
       <svg class="chart"></svg>
