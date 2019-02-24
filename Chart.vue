@@ -54,7 +54,8 @@ export default {
   methods: {
     get(url) {
       var req = new XMLHttpRequest();
-      req.open('GET', url, false);
+      req.open('GET', url.replace(/\(/g, "%28").replace(/\)/g, "%29"), false);
+
       req.send(null);
       try {
         return JSON.parse(req.responseText);
@@ -82,7 +83,9 @@ export default {
 
     getEntities() {
 
-      d3.json(this.root+this.currentAuthor+"/"+this.currentWork).then(function(entities) {
+      const url = this.root+this.currentAuthor+"/"+this.currentWork
+
+      d3.json(url.replace(/\(/g, "%28").replace(/\)/g, "%29")).then(function(entities) {
 
         var data = []
         for (var entity in entities) {
