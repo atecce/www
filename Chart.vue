@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     works() {
-      return this.get(this.root + this.currentAuthor)
+      return this.get(this.root + "authors/" + this.currentAuthor)
     }
   },
   methods: {
@@ -64,7 +64,7 @@ export default {
       }
     },
     fetchAuthors() {
-      fetch(this.root).then(res => {
+      fetch(this.root + "authors").then(res => {
 
         const r = res.body.getReader()
 
@@ -83,7 +83,7 @@ export default {
 
     getEntities() {
 
-      const url = this.root+this.currentAuthor+"/"+this.currentWork
+      const url = this.root + "authors/" + this.currentAuthor+ "/works/" + this.currentWork
 
       d3.json(url.replace(/\(/g, "%28").replace(/\)/g, "%29")).then(function(entities) {
 
