@@ -140,9 +140,6 @@ export default {
       })
     },
   },
-  mounted: function() {
-    this.searchAuthors()
-  }
 }
 </script>
 
