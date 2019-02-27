@@ -1,7 +1,8 @@
 <template>
   <div>
     
-    <input class="input" v-model="searchText" v-on:keyup="searchAuthors"/>
+    <br>
+    <input class="input" placeholder="search authors to filter dropdown" v-model="searchText" v-on:keyup="searchAuthors"/>
     <br><br>
 
     <div class="select">
@@ -141,6 +142,9 @@ export default {
       })
     },
   },
+  mounted: function() {
+    this.searchAuthors()
+  }
 }
 </script>
 
@@ -163,7 +167,7 @@ export default {
 }
 
 .input {
-  width: 200px;
+  width: 300px;
   margin-left: 10px;
 }
 
