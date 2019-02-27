@@ -1,9 +1,16 @@
 <template>
   <div>
-    
+
     <br>
-    <input class="input" placeholder="search authors to filter dropdown" v-model="searchText" v-on:keyup="searchAuthors"/>
-    <br><br>
+    <div class="field">
+      <div class="control has-icons-left">
+        <input class="input" placeholder="search authors to filter dropdown" v-model="searchText" v-on:keyup="searchAuthors"/>
+        <span class="icon is-large is-left">
+          <i class="fa fa-search"></i>
+        </span>
+      </div>
+    </div>
+    <br>
 
     <div class="select">
       <select v-model="currentAuthor">
@@ -169,6 +176,10 @@ export default {
 }
 
 select {
+  margin-left: 10px;
+}
+
+span {
   margin-left: 10px;
 }
 </style>
