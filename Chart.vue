@@ -1,8 +1,17 @@
 <template>
   <div>
-    <div class="model-select">
-      <model-select :options="authors" v-model="currentAuthor" placeholder="author"></model-select>
+    
+    <input class="input" v-model="searchText" v-on:keyup="searchAuthors"/>
+    <br><br>
+
+    <div class="select">
+      <select v-model="currentAuthor">
+        <option v-for="author in authors" :key="author">
+          {{ author }}
+        </option>
+      </select>
     </div>
+    <br><br>
 
     <div class="select">
       <select v-model="currentWork">
@@ -11,13 +20,11 @@
         </option>
       </select>
     </div>
-    <br>
-    <br>
-
+    <br><br>
+    
     <button class="button" @click="getEntities">Get Entities</button>
-    <br>
-    <br>
-
+    <br><br>
+    
     <div class="scroller">
       <svg class="chart"></svg>
     </div>
@@ -26,16 +33,14 @@
 
 <script>
 import * as d3 from 'd3'
-import { ModelSelect } from 'vue-search-select'
 
 export default {
-  components: {
-    ModelSelect
-  },
   data () {
     return {
 
       root: "https://canon.atec.pub/",
+
+      searchText: "",
 
       currentAuthor: "",
       currentWork: "",
@@ -46,7 +51,7 @@ export default {
   computed: {
     works() {
       return this.get(this.root + "authors/" + this.currentAuthor)
-    }
+    },
   },
   methods: {
     get(url) {
@@ -60,24 +65,12 @@ export default {
         return
       }
     },
-    fetchAuthors() {
-      fetch(this.root + "authors").then(res => {
 
-        const r = res.body.getReader()
-
-        r.read().then(({ done, value }) => {
-
-          const newAuthors = new TextDecoder("utf-8").decode(value).split("\n")
-
-          for (var i in newAuthors) {
-            this.authors.push({ "value": newAuthors[i], "text": newAuthors[i] })
-          }
-
-          console.log(this.authors)
-
-          if (done) {
-            return
-          }
+    searchAuthors() {
+      fetch(this.root + "authors?search=" + this.searchText).then(res => {
+        res.body.getReader().read().then(({ value }) => {
+          this.authors = new TextDecoder("utf-8").decode(value).split("\n")
+          return 
         })
       })
     },
@@ -148,9 +141,6 @@ export default {
       })
     },
   },
-  mounted: function() {
-      this.fetchAuthors()
-  },
 }
 </script>
 
@@ -172,16 +162,15 @@ export default {
   overflow-x: scroll;
 }
 
+.input {
+  width: 200px;
+  margin-left: 10px;
+}
+
 select {
   margin-left: 10px;
 }
 
-.model-select {
-  margin-left: 10px;
-  margin-right: 1000px;
-  margin-bottom: 10px;
-}
- 
 button {
   margin-left: 10px;
 }

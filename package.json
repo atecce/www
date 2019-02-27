@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "d3": "^5.7.0",
-    "vue-search-select": "^2.8.3"
+    "d3": "^5.7.0"
   }
 }
