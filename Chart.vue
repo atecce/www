@@ -2,24 +2,18 @@
   <div>
 
     <br>
-    <div class="field">
-      <div class="control has-icons-left">
-        <input class="input" placeholder="search authors to filter dropdown" v-model="searchText" v-on:keyup="searchAuthors"/>
-        <span class="icon is-large is-left">
-          <i class="fa fa-search"></i>
-        </span>
-      </div>
-    </div>
-    <br>
-
-    <div class="select">
-      <select v-model="currentAuthor">
+    <div class="field control has-icons-left">
+      <input list="authors" class="input" placeholder="search for authors" 
+             v-model="searchText" v-on:keyup="searchAuthors"/>
+      <span class="icon is-large is-left">
+        <i class="fa fa-search"></i>
+      </span>
+      <datalist id="authors">
         <option v-for="author in authors" :key="author">
           {{ author }}
         </option>
-      </select>
+      </datalist>
     </div>
-    <br><br>
 
     <div class="select">
       <select v-model="currentWork" @change="getEntities">
@@ -55,7 +49,7 @@ export default {
   },
   computed: {
     works() {
-      return this.get(this.root + "authors/" + this.currentAuthor)
+      return this.get(this.root + "authors/" + this.searchText)
     },
   },
   methods: {
@@ -82,7 +76,7 @@ export default {
 
     getEntities() {
 
-      const url = this.root + "authors/" + this.currentAuthor+ "/works/" + this.currentWork
+      const url = this.root + "authors/" + this.searchText + "/works/" + this.currentWork
 
       d3.json(url.replace(/\(/g, "%28").replace(/\)/g, "%29")).then(function(entities) {
 
