@@ -15,15 +15,12 @@
     <br><br>
 
     <div class="select">
-      <select v-model="currentWork">
+      <select v-model="currentWork" @change="getEntities">
         <option v-for="work in works" :key="work">
           {{ work }}
         </option>
       </select>
     </div>
-    <br><br>
-    
-    <button class="button" @click="getEntities">Get Entities</button>
     <br><br>
     
     <div class="scroller">
@@ -172,10 +169,6 @@ export default {
 }
 
 select {
-  margin-left: 10px;
-}
-
-button {
   margin-left: 10px;
 }
 </style>
