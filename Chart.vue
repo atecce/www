@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isDesktopFirefox()">
 
     <br>
     <div class="field control has-icons-left">
@@ -53,6 +53,11 @@ export default {
     },
   },
   methods: {
+
+    isDesktopFirefox: function() {
+      return !navigator.userAgent.match(/AppleWebKit/) && navigator.userAgent.match(/Gecko/)
+    },
+
     get(url) {
       var req = new XMLHttpRequest();
       req.open('GET', url.replace(/\(/g, "%28").replace(/\)/g, "%29"), false);

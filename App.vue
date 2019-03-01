@@ -25,7 +25,7 @@
       </nav>
     </div>
 
-    <Chart v-if="isDesktopFirefox()"></Chart>
+    <Chart></Chart>
 
   </div>
 </template>
@@ -37,11 +37,6 @@ import Chart from './Chart.vue'
 export default {
   components: {
     Chart
-  },
-  methods: {
-    isDesktopFirefox: function() {
-      return !navigator.userAgent.match(/AppleWebKit/) && navigator.userAgent.match(/Gecko/)
-    }
   },
   created: function () {
 
