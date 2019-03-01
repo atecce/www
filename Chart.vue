@@ -101,7 +101,7 @@ export default {
         }
 
         data.sort(function(a, b) {
-          return a.count < b.count
+          return b.count - a.count
         })
 
         const width = data.length * 75, height = 500
