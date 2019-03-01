@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isDesktopFirefox()">
+  <div>
 
     <br>
     <div class="field control has-icons-left">
@@ -8,11 +8,19 @@
       <span class="icon is-large is-left">
         <i class="fa fa-search"></i>
       </span>
-      <datalist id="authors">
+    </div>
+
+    <datalist  v-if="isDesktopFirefox()" id="authors">
+      <option v-for="author in authors" :key="author">
+        {{ author }}
+      </option>
+    </datalist>
+    <div v-else class="select">
+      <select v-model="searchText">
         <option v-for="author in authors" :key="author">
           {{ author }}
         </option>
-      </datalist>
+      </select>
     </div>
 
     <div class="select">
