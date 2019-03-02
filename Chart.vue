@@ -16,7 +16,7 @@
       </option>
     </datalist>
     <div v-else class="select">
-      <select v-model="searchText">
+      <select v-model="selectedAuthor">
         <option v-for="author in authors" :key="author">
           {{ author }}
         </option>
@@ -48,8 +48,8 @@ export default {
       root: "https://canon.atec.pub/",
 
       searchText: "",
+      selectedAuthor: "",
 
-      currentAuthor: "",
       currentWork: "",
 
       authors: [],
@@ -57,8 +57,11 @@ export default {
   },
   computed: {
     works() {
-      return this.get(this.root + "authors/" + this.searchText)
+      return this.get(this.root + "authors/" + this.currentAuthor)
     },
+    currentAuthor() {
+      return this.selectedAuthor == "" ? this.searchText : this.selectedAuthor
+    }
   },
   methods: {
 
@@ -89,7 +92,7 @@ export default {
 
     getEntities() {
 
-      const url = this.root + "authors/" + this.searchText + "/works/" + this.currentWork
+      const url = this.root + "authors/" + this.currentAuthor + "/works/" + this.currentWork
 
       d3.json(url.replace(/\(/g, "%28").replace(/\)/g, "%29")).then(function(entities) {
 
