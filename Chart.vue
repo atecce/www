@@ -69,11 +69,16 @@ export default {
       return !navigator.userAgent.match(/AppleWebKit/) && navigator.userAgent.match(/Gecko/)
     },
 
+    // TODO use fetch
     get(url) {
       var req = new XMLHttpRequest();
       req.open('GET', url.replace(/\(/g, "%28").replace(/\)/g, "%29"), false);
 
       req.send(null);
+      if (req.status != 200) {
+        return
+      }
+
       try {
         return JSON.parse(req.responseText);
       } catch {
