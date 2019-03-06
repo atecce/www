@@ -2,7 +2,7 @@
 
 WWW=/keybase/private/atec,kbpbot/www
 
-rm -rf $WWW/*
+rm -rf $WWW/*.html $WWW/favicon.ico $WWW/resume.pdf $WWW/js $WWW/css
 
 vue build
 
