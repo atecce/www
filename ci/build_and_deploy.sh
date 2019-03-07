@@ -10,7 +10,7 @@ touch resume.pdf
 osascript ./ci/build_resume.applescript
 
 cp -r dist/ $WWW
-cp favicon.ico resume.pdf adventures.html $WWW
+cp favicon.ico resume.pdf adventures.html crawl.gif $WWW
 cp io.html $WWW/io
 cp canon.html $WWW/canon
 
