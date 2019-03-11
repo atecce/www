@@ -1,5 +1,7 @@
 <template>
   <div>
+    <Header></Header>
+
     <section class="hero">
       <div class="hero-body">
         <div class="container">
@@ -20,10 +22,12 @@
 </template>
 
 <script>
+import Header from './Header.vue'
 import Chart from './Chart.vue'
 
 export default {
   components: {
+    Header,
     Chart
   }
 }
