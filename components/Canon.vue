@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Header></Header>
 
     <section class="hero">
       <div class="hero-body">
@@ -14,6 +13,7 @@
         </div>
       </div>
     </section>
+
     <img src="../crawl.gif">
 
     <Chart></Chart> 

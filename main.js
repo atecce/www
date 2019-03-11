@@ -7,10 +7,10 @@ import Canon from './components/Canon.vue'
 Vue.use(VueRouter)
 
 new Vue({
+  render: h => h(App),
   router: new VueRouter({
     routes: [
-      { path: '/', component: App },
       { path: '/canon', component: Canon }
     ]
-  })
+  }),
 }).$mount('#app')
