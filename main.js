@@ -10,6 +10,7 @@ Vue.use(VueRouter)
 new Vue({
   render: h => h(App),
   router: new VueRouter({
+    mode: 'history',
     routes: [
       { path: '/canon', component: Canon },
       { path: '/io', component: IO }
