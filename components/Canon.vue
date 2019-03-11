@@ -12,7 +12,7 @@
         </div>
       </div>
     </section>
-    <img src="./crawl.gif">
+    <img src="../crawl.gif">
 
     <Chart></Chart> 
 
