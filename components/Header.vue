@@ -2,6 +2,9 @@
   <div class="container">
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
+        <router-link class="navbar-item icon-flipped" to="/">
+          <i class="fas fa-slash"></i>
+        </router-link>
         <a class="navbar-item" href="https://keybase.io/atec" target="_blank">
           <i class="fab fa-keybase"></i>
         </a>
@@ -24,3 +27,12 @@
     </nav>
   </div>
 </template>
+
+<style>
+.icon-flipped {
+  transform: scaleX(-.75);
+  -moz-transform: scaleX(-.75);
+  -webkit-transform: scaleX(-.75);
+  -ms-transform: scaleX(-.75);
+}
+</style>
