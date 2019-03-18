@@ -1,9 +1,39 @@
 <template>
   <div>
+
     <Header></Header>
-    <router-view></router-view>
+
+    <transition name="fade" mode="out-in">
+      <router-view></router-view>
+    </transition>
+
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">
+            <router-link to="/canon">canon</router-link>
+          </h1>
+        </div>
+      </div>
+    </section>
+
   </div>
 </template>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.3s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0
+}
+</style>
+
 
 <script>
 import Header from './Header.vue'
