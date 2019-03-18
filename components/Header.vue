@@ -23,6 +23,9 @@
         <a class="navbar-item" target="_blank" href="/resume.pdf">
           <i class="fas fa-file-alt"></i>
         </a>
+        <a class="navbar-item" href="mailto:root@atec.pub">
+          <i class="fas fa-envelope"></i>
+        </a>
       </div>
     </nav>
   </div>
