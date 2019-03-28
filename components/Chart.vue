@@ -10,13 +10,14 @@
       </span>
     </div>
 
-    <datalist  v-if="isDesktopFirefox()" id="authors">
-      <option v-for="author in authors" :key="author">
+    <!-- <datalist v-if="isDesktopFirefox()" id="authors">
+      <option v-for="author in authors" :key="author" @change="getWorks">
         {{ author }}
       </option>
     </datalist>
-    <div v-else class="select">
-      <select v-model="selectedAuthor">
+    <div v-else class="select"> -->
+    <div class="select">
+      <select v-model="selectedAuthor" @change="getWorks">
         <option v-for="author in authors" :key="author">
           {{ author }}
         </option>
@@ -53,12 +54,10 @@ export default {
       currentWork: "",
 
       authors: [],
+      works: [],
     }
   },
   computed: {
-    works() {
-      return this.get(this.root + "authors/" + this.currentAuthor)
-    },
     currentAuthor() {
       return this.selectedAuthor == "" ? this.searchText : this.selectedAuthor
     }
@@ -93,6 +92,10 @@ export default {
           return 
         })
       })
+    },
+
+    getWorks() {
+      this.works = this.get(this.root + "authors/" + this.currentAuthor)
     },
 
     getEntities() {
