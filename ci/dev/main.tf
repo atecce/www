@@ -8,6 +8,7 @@ resource "cloudflare_record" "CNAME" {
     domain = "atec.pub"
     type = "CNAME"
     value = "kbp.keybaseapi.com"
+    proxied = true
 }
 
 resource "cloudflare_record" "TXT" {
