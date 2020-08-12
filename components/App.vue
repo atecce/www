@@ -1,37 +1,8 @@
 <template>
   <div>
-
     <Header></Header>
-
     <transition name="fade" mode="out-in">
-
       <router-view></router-view>
-
-      <section class="hero">
-        <div class="hero-body">
-          <div class="container">
-            <p>
-              Hai! My name's Alex.
-              <br><br>
-              I write software to make a living, and you can find more about me profesionally <a href="/resume.pdf" target="_blank">here</a>.
-              Most of my experience in large organizations is designing semantic contracts (with either gRPC or REST) for backend services
-              and throwing them over the wall in a way that scales to loads as high as tens of millions of requests per day and datasets as large as tens of terabytes.
-              <br><br>
-              But the real reason I do this is because it's the closest thing I know there is to having super powers, and I'd be doing it anyway.
-              I know of no other skill where you can write your careful thought down and watch it solve problems, and that forms the core of my interest in it.
-              <br><br>
-              In particular I'm fascinated how text serves as a universal interface to make meaningful things, 
-              and that perspective spans from the way the culture of Unix creates practical tools for engineering systems that are almost ubiquitously adopted 
-              (and indeed, have become invisible to most people), to academic research in natural language processing 
-              to explain how exactly it is that I'm communicating with you through this sentence right now.
-              If you're into that sort of thing as well, you can see some personal stuff I've been messing around with <router-link to="/canon">here</router-link>.
-              <br><br>
-              If you'd like to contact me, you can always reach me at <a href="mailto:root@atec.pub">root@atec.pub</a>
-            </p>
-          </div>
-        </div>
-      </section>
-
     </transition>
   </div>
 </template>
